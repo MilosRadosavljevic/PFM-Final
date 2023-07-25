@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PFM.Database.Entities;
 using PFM.Models;
+using System.Globalization;
 
 namespace PFM.Database.Repositories
 {
@@ -31,7 +32,6 @@ namespace PFM.Database.Repositories
             string? transactionKind = null
             )
         {
-
             var query = _dbContext.Transactions.Include(x=>x.Splits).AsQueryable();
 
             var totalCount = query.Count();
@@ -41,6 +41,30 @@ namespace PFM.Database.Repositories
             {
                 switch (sortBy)
                 {
+                    case "id":
+                        query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.Id) : query.OrderByDescending(x => x.Id);
+                    break;
+                    case "beneficiary-name":
+                        query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.BeneficiaryName) : query.OrderByDescending(x => x.BeneficiaryName);
+                    break;
+                    case "date":
+                        query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.Date) : query.OrderByDescending(x => x.Date);
+                    break;
+                    case "direction":
+                        query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.Direction) : query.OrderByDescending(x => x.Direction);
+                    break;
+                    case "amount":
+                        query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.Amount) : query.OrderByDescending(x => x.Amount);
+                    break;
+                    case "description":
+                        query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.Description) : query.OrderByDescending(x => x.Description);
+                    break;
+                    case "currency":
+                        query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.Currency) : query.OrderByDescending(x => x.Currency);
+                    break;
+                    case "mcc":
+                        query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.MccCode) : query.OrderByDescending(x => x.MccCode);
+                    break;
                     case "kind":
                         query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.Kind) : query.OrderByDescending(x => x.Kind);
                         break;
@@ -48,10 +72,12 @@ namespace PFM.Database.Repositories
             }
             else
             {
-                query = query.OrderBy(x => x.Id);
+                query = query.OrderBy(x => x.Date);
             }
 
+            //ValidationProblem valProblem;
             BusinessProblem busProblem;
+            //List<Error> validationErrors = new List<Error>();
 
             if (!string.IsNullOrEmpty(transactionKind))
             {
@@ -72,10 +98,45 @@ namespace PFM.Database.Repositories
 
             }
 
+            //ValidationProblem valProblem;
+            //List<Error> validationErrors = new List<Error>();
+            //string expectedDateFormat = "dd-MM-yyyy"; // 01-01-2021
 
             if (startDate.HasValue)
+            {
+                //if (!DateTime.TryParseExact(startDate.Value.ToString("dd-MM-yyyy"), expectedDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+                //{
+                //    validationErrors.Add(new Error
+                //    {
+                //        Message = "Provided start date is not valid value or not in valid format",
+                //        Tag = "start-date",
+                //        Err = "invalid-value-start-date"
+                //    });
+                //    valProblem = new ValidationProblem
+                //    {
+                //        Errors = validationErrors
+                //    };
+                //    throw new CustomException(valProblem);
+                //}
+                
+                query = query.Where(x => x.Date >= startDate.Value);
+            }
             if (endDate.HasValue)
             {
+                //if (!DateTime.TryParseExact(endDate.Value.ToString("dd-MM-yyyy"), expectedDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
+                //{
+                //    validationErrors.Add(new Error
+                //    {
+                //        Message = "Provided start date is not valid value or not in valid format",
+                //        Tag = "start-date",
+                //        Err = "invalid-value-start-date"
+                //    });
+                //    valProblem = new ValidationProblem
+                //    {
+                //        Errors = validationErrors
+                //    };
+                //    throw new CustomException(valProblem);
+                //}
                 query = query.Where(x => x.Date <= endDate.Value);
             }
             query = query.Skip((page - 1) * pageSize).Take(pageSize);
@@ -90,8 +151,6 @@ namespace PFM.Database.Repositories
                 PageSize = pageSize,
                 SortBy = sortBy,
                 SortOrder = sortOrder,
-                //StartDate = startDate,
-                //EndDate = endDate,
                 Items = transactions,
             };
         }

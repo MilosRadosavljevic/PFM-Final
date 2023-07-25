@@ -38,15 +38,14 @@ namespace PFM.Services
         public async Task<CategoryList<Category>> GetGategories(string parentId)
         {
             var categories = await _repository.GetGategories(parentId);
-            BusinessProblem busProblem;
 
-            if (categories == null)
+            if (parentId != null && await _repository.CheckCodeValueError(parentId))
             {
-                busProblem = new BusinessProblem
+                BusinessProblem busProblem = new BusinessProblem
                 {
-                    ProblemLiteral = "Parent-id-does-not-exist",
-                    ProblemMessage = "Parent id does not exist",
-                    ProblemDetails = "Provided parent id does not exist"
+                    ProblemLiteral = "category-code-does-not-exist",
+                    ProblemMessage = "Category code does not exist",
+                    ProblemDetails = "Provided category code does not exist"
                 };
                 throw new CustomException(busProblem);
             }

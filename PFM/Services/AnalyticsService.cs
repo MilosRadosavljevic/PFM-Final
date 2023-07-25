@@ -29,7 +29,7 @@ namespace PFM.Services
                 };
                 throw new CustomException(busProblem);
             }
-            //var category = await _categoryRepository.GetCategoryByCode(categoryCode);
+
             var spendings = await _transactionRepository.GetSpendingsByCategory(categoryCode, startDate, endDate, direction);
             return _mapper.Map<SpendingByCategory<SpendingInCategory>>(spendings);
         }
