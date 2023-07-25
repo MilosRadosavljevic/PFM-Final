@@ -1,4 +1,5 @@
 ﻿using CsvHelper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using PFM.Commands;
 using PFM.Mappings;
@@ -8,6 +9,7 @@ using System.Globalization;
 
 namespace PFM.Controllers
 {
+    [EnableCors("MyCORSPolicy")]
     [ApiController]
     [Route("v1/categories")]
     public class CategoryController : ControllerBase
@@ -40,7 +42,7 @@ namespace PFM.Controllers
         }
 
         [HttpPost("import")]
-        public async Task<IActionResult> ImportTransactions(IFormFile file)
+        public async Task<IActionResult> ImportCategories(IFormFile file)
         {
             try
             {
@@ -48,19 +50,18 @@ namespace PFM.Controllers
                 using (var reader = new StreamReader(file.OpenReadStream()))
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
-                    csv.Context.RegisterClassMap<CategoryMap>();
+                    csv.Context.RegisterClassMap<CategoryMap>();                   
                     var records = csv.GetRecords<CreateCategoryCommand>().ToList();
                     foreach (var record in records)
                     {
                         await _categoryService.CreateCategory(record);
                     }
                 }
-
                 return Ok();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error importing transactions.");
+                _logger.LogError(ex, "Error importing categories.");
                 return StatusCode(500, "An error occurred while importing transactions.");
             }
         }

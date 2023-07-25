@@ -9,6 +9,6 @@ namespace PFM.Database.Repositories
         Task<CategoryEntity> GetCategoryByCode(string categoryCode);
         Task<CategoryList<CategoryEntity>> GetGategories(string parentId);
         Task<CategoryEntity> UpdateCategory(CategoryEntity existingCategory);
-        Task<List<CategoryEntity>> GetAllCategories();
+        Task<bool> CheckCodeValueError(string? categoryCode);
     }
 }

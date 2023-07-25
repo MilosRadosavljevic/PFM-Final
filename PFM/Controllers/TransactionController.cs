@@ -6,9 +6,11 @@ using PFM.Services;
 using System.Globalization;
 using PFM.Models;
 using System.ComponentModel;
+using Microsoft.AspNetCore.Cors;
 
 namespace PFM.Controllers
 {
+    [EnableCors("MyCORSPolicy")]
     [ApiController]
     [Route("v1/transactions")]
     public class TransactionController : ControllerBase
@@ -20,7 +22,6 @@ namespace PFM.Controllers
         { 
             _logger = logger;
             _transactionService = transactionService;
-
         }
 
         [HttpGet]
@@ -32,8 +33,7 @@ namespace PFM.Controllers
             [FromQuery(Name = "start-date")] DateTime? startDate = null,
             [FromQuery(Name = "end-date")] DateTime? endDate = null,
             [FromQuery(Name = "stransaction-kind")] string? transactionKind = null)
-        {
-            
+        {            
             try
             {
                 var transactions = await _transactionService.GetTransactions(page, pageSize, sortOrder, sortBy, startDate, endDate, transactionKind);

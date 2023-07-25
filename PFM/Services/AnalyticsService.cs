@@ -18,10 +18,8 @@ namespace PFM.Services
         }
 
         public async Task<SpendingByCategory<SpendingInCategory>> GetSpendingAnalytics(string? categoryCode, DateTime? startDate, DateTime? endDate, Direction? direction)
-        {
-            var category = _categoryRepository.GetCategoryByCode(categoryCode);
-
-            if (category == null)
+        {            
+            if (categoryCode != null && await _categoryRepository.CheckCodeValueError(categoryCode))
             {
                 BusinessProblem busProblem = new BusinessProblem
                 {
@@ -31,7 +29,7 @@ namespace PFM.Services
                 };
                 throw new CustomException(busProblem);
             }
-
+            //var category = await _categoryRepository.GetCategoryByCode(categoryCode);
             var spendings = await _transactionRepository.GetSpendingsByCategory(categoryCode, startDate, endDate, direction);
             return _mapper.Map<SpendingByCategory<SpendingInCategory>>(spendings);
         }

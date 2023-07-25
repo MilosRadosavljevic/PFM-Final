@@ -145,7 +145,7 @@ namespace PFM.Services
                     validationErrors.Add(new Error { 
                         Message = "Forbidden to split by the same category", 
                         Tag = "catcode",
-                        Err = "forbidden-split-by-same-category" 
+                        Err = "forbidden-split-by-same-category"
                     });
                     valProblem = new ValidationProblem
                     {

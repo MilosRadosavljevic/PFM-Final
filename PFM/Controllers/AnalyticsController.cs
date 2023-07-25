@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PFM.Services;
 using PFM.Models;
+using Microsoft.AspNetCore.Cors;
 
 namespace PFM.Controllers
 {
+    [EnableCors("MyCORSPolicy")]
     [ApiController]
     [Route("v1/spending-analytics")]
     public class AnalyticsController : ControllerBase

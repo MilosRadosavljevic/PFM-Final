@@ -15,7 +15,10 @@ namespace PFM.Database.Repositories
 
         public async Task<CategoryEntity> UpdateCategory(CategoryEntity existingCategory)
         {
-            _dbContext.Categories.Update(existingCategory);
+            var categoryToUpdate = await _dbContext.Categories.FirstOrDefaultAsync(x => x.Code == existingCategory.Code);
+            categoryToUpdate.Name = existingCategory.Name;
+            categoryToUpdate.ParentCode = existingCategory.ParentCode;
+            _dbContext.Categories.Update(categoryToUpdate);
             await _dbContext.SaveChangesAsync();
             return existingCategory;
         }
@@ -31,11 +34,6 @@ namespace PFM.Database.Repositories
         public async Task<CategoryEntity> GetCategoryByCode(string categoryCode)
         {            
             return await _dbContext.Categories.FirstOrDefaultAsync(x => x.Code.Equals(categoryCode));
-        }
-
-        public async Task<List<CategoryEntity>> GetAllCategories()
-        {
-            return await _dbContext.Categories.ToListAsync();
         }
 
         public async Task<CategoryList<CategoryEntity>> GetGategories(string parentId)
@@ -60,6 +58,19 @@ namespace PFM.Database.Repositories
                     Items = categories
                 };
             }
+        }
+
+        public async Task <bool> CheckCodeValueError(string? categoryCode)
+        {
+            var query = _dbContext.Categories.AsQueryable();
+            var categoriesList = await query.ToListAsync();
+            var categoryExist = categoriesList.FirstOrDefault(x=>x.Code == categoryCode);
+            if (categoryExist == null || (categoryCode!=null && categoryCode.Length > 1))
+            {
+                return true;
+            }
+            return false;
+            
         }
     }
 }
