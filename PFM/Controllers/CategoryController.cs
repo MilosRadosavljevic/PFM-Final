@@ -11,7 +11,7 @@ namespace PFM.Controllers
 {
     [EnableCors("MyCORSPolicy")]
     [ApiController]
-    [Route("v1/categories")]
+    [Route("categories")]
     public class CategoryController : ControllerBase
     {
         ICategoryService _categoryService;

@@ -7,7 +7,7 @@ namespace PFM.Controllers
 {
     [EnableCors("MyCORSPolicy")]
     [ApiController]
-    [Route("v1/spending-analytics")]
+    [Route("spending-analytics")]
     public class AnalyticsController : ControllerBase
     {
         IAnalyticsService _analyticsService;

@@ -12,7 +12,7 @@ namespace PFM.Controllers
 {
     [EnableCors("MyCORSPolicy")]
     [ApiController]
-    [Route("v1/transactions")]
+    [Route("transactions")]
     public class TransactionController : ControllerBase
     {
         ITransactionService _transactionService;
@@ -26,13 +26,13 @@ namespace PFM.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetTransactions (
-            [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 10,
+            [FromQuery(Name = "page")] int page = 1,
+            [FromQuery(Name = "page-size")] int pageSize = 10,
             [FromQuery(Name = "sort-order")] SortOrder sortOrder = SortOrder.Asc,
             [FromQuery(Name = "sort-by")] string? sortBy = null,
             [FromQuery(Name = "start-date")] DateTime? startDate = null,
             [FromQuery(Name = "end-date")] DateTime? endDate = null,
-            [FromQuery(Name = "stransaction-kind")] string? transactionKind = null)
+            [FromQuery(Name = "transaction-kind")] string? transactionKind = null)
         {            
             try
             {
@@ -113,8 +113,6 @@ namespace PFM.Controllers
                     return new ObjectResult(ex.Problem) { StatusCode = 440 };
                 }
                 return new ObjectResult(ex.Problem) { StatusCode = 400 };
-
-                //  return BadRequest(ex.Problem)
             }                
         }
 
