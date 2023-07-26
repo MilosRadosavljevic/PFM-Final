@@ -46,11 +46,10 @@ namespace PFM.Controllers
         {
             try
             {
+                ValidationProblem valProblem;
+                List<Error> validationErrors = new List<Error>();
                 if (file == null || file.Length == 0)
                 {
-                    ValidationProblem valProblem;
-                    List<Error> validationErrors = new List<Error>();
-
                     validationErrors.Add(new Error
                     {
                         Message = "File to import is empty or not selected.",
@@ -67,19 +66,39 @@ namespace PFM.Controllers
                 using (var reader = new StreamReader(file.OpenReadStream()))
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
-                    csv.Context.RegisterClassMap<CategoryMap>();                   
-                    var records = csv.GetRecords<CreateCategoryCommand>().ToList();
-                    foreach (var record in records)
+                    csv.Context.RegisterClassMap<CategoryMap>();
+                    try
                     {
-                        await _categoryService.CreateCategory(record);
+                        var records = csv.GetRecords<CreateCategoryCommand>().ToList();
+                        foreach (var record in records)
+                        {
+                            await _categoryService.CreateCategory(record);
+                        }
                     }
+                    catch (HeaderValidationException ex)
+                    {
+                        validationErrors.Add(new Error
+                        {
+                            Message = "Invalid or missing headers in the file.",
+                            Tag = "file",
+                            Err = "invalid-headers"
+                        });
+                        valProblem = new ValidationProblem
+                        {
+                            Errors = validationErrors
+                        };
+                        throw new CustomException(valProblem);
+                    }                    
                 }
                 return Ok();
             }
-            catch (Exception ex)
+            catch (CustomException ex)
             {
-                _logger.LogError(ex, "Error importing categories.");
-                return StatusCode(500, "An error occurred while importing transactions.");
+                if (ex.Problem is BusinessProblem)
+                {
+                    return new ObjectResult(ex.Problem) { StatusCode = 440 };
+                }
+                return new ObjectResult(ex.Problem) { StatusCode = 400 };
             }
         }
 

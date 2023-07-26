@@ -7,6 +7,7 @@ using System.Globalization;
 using PFM.Models;
 using System.ComponentModel;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.OpenApi.Expressions;
 
 namespace PFM.Controllers
 {
@@ -55,11 +56,10 @@ namespace PFM.Controllers
         {
             try
             {
+                ValidationProblem valProblem;
+                List<Error> validationErrors = new List<Error>();
                 if (file == null || file.Length == 0)
-                {
-                    ValidationProblem valProblem;
-                    List<Error> validationErrors = new List<Error>();
-
+                {                  
                     validationErrors.Add(new Error
                     {
                         Message = "File to import is empty or not selected.",
@@ -77,11 +77,29 @@ namespace PFM.Controllers
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                 {
                     csv.Context.RegisterClassMap<TransactionMap>();
-                    var records = csv.GetRecords<CreateTransactionCommand>().ToList();
-                    foreach (var record in records)
+                    try
                     {
-                        await _transactionService.CreateTransaction(record);
+                        var records = csv.GetRecords<CreateTransactionCommand>().ToList();
+                        foreach (var record in records)
+                        {
+                            await _transactionService.CreateTransaction(record);
+                        }
                     }
+                    catch (HeaderValidationException ex)
+                    {
+                        validationErrors.Add(new Error
+                        {
+                            Message = "Invalid or missing headers in the file.",
+                            Tag = "file",
+                            Err = "invalid-headers"
+                        });
+                        valProblem = new ValidationProblem
+                        {
+                            Errors = validationErrors
+                        };
+                        throw new CustomException(valProblem);
+                    }
+                    
                 }
                 return Ok();
             }

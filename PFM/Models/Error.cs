@@ -5,12 +5,12 @@ namespace PFM.Models
     public class Error
     {
         [JsonPropertyName("tag")]
-        public string Tag { get; set; } // json polje na koje se odnosi
+        public string Tag { get; set; } 
 
         [JsonPropertyName("error")]
-        public string Err {get; set;} // tip greske koja se desila
+        public string Err {get; set;} 
 
         [JsonPropertyName("message")]
-        public string Message { get; set; } // opis greske
+        public string Message { get; set; } 
     }
 }

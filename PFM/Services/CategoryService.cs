@@ -28,7 +28,6 @@ namespace PFM.Services
             }
             else
             {
-                // updating name, parent-code if category already exists
                 var existingCategory = _mapper.Map<CategoryEntity>(createCategoryCommand);
                 await _repository.UpdateCategory(existingCategory);
                 return _mapper.Map<Category>(existingCategory);                

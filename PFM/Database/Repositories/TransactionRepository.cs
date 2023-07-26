@@ -96,45 +96,12 @@ namespace PFM.Database.Repositories
 
             }
 
-            //ValidationProblem valProblem;
-            //List<Error> validationErrors = new List<Error>();
-            //string expectedDateFormat = "dd-MM-yyyy"; // 01-01-2021
-
             if (startDate.HasValue)
             {
-                //if (!DateTime.TryParseExact(startDate.Value.ToString("dd-MM-yyyy"), expectedDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
-                //{
-                //    validationErrors.Add(new Error
-                //    {
-                //        Message = "Provided start date is not valid value or not in valid format",
-                //        Tag = "start-date",
-                //        Err = "invalid-value-start-date"
-                //    });
-                //    valProblem = new ValidationProblem
-                //    {
-                //        Errors = validationErrors
-                //    };
-                //    throw new CustomException(valProblem);
-                //}
-
                 query = query.Where(x => x.Date >= startDate.Value);
             }
             if (endDate.HasValue)
             {
-                //if (!DateTime.TryParseExact(endDate.Value.ToString("dd-MM-yyyy"), expectedDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
-                //{
-                //    validationErrors.Add(new Error
-                //    {
-                //        Message = "Provided start date is not valid value or not in valid format",
-                //        Tag = "start-date",
-                //        Err = "invalid-value-start-date"
-                //    });
-                //    valProblem = new ValidationProblem
-                //    {
-                //        Errors = validationErrors
-                //    };
-                //    throw new CustomException(valProblem);
-                //}
                 query = query.Where(x => x.Date <= endDate.Value);
             }
             query = query.Skip((page - 1) * pageSize).Take(pageSize);

@@ -73,7 +73,7 @@
 							"// Provera ukupne vrednosti svih transakcija (amount) za catcode = 'A'\r",
 							"pm.test(\"Total amount of transactions is correct\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.groups[0].amount).to.eql(18.2);\r",
+							"    pm.expect(jsonData.groups[0].amount).to.eql(300.1);\r",
 							"});\r",
 							"\r",
 							"\r",
@@ -122,7 +122,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 440 Not Found\", function () {\r",
+							"pm.test(\"Status code is 440\", function () {\r",
 							"    pm.response.to.have.status(440);\r",
 							"});\r",
 							"\r",
@@ -340,7 +340,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 440 Not Found\", function () {\r",
+							"pm.test(\"Status code is 440\", function () {\r",
 							"    pm.response.to.have.status(440);\r",
 							"});\r",
 							"\r",
@@ -470,7 +470,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 440 Not Found\", function () {\r",
+							"pm.test(\"Status code is 440\", function () {\r",
 							"    pm.response.to.have.status(440);\r",
 							"});\r",
 							"\r",
@@ -517,77 +517,6 @@
 						{
 							"key": "transaction-kind",
 							"value": "asd"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/transactions/import - 440",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 440 Not Found\", function () {\r",
-							"    pm.response.to.have.status(440);\r",
-							"});\r",
-							"\r",
-							"var schema = {\r",
-							"  \"type\": \"object\",\r",
-							"  \"properties\": {\r",
-							"    \"problem\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"message\": {\r",
-							"      \"type\": \"string\"\r",
-							"    },\r",
-							"    \"details\": {\r",
-							"      \"type\": \"string\"\r",
-							"    }\r",
-							"  },\r",
-							"  \"required\": [\"problem\", \"message\", \"details\"]\r",
-							"};\r",
-							"\r",
-							"//Tesiranje odgovora prema JSON schema:\r",
-							"pm.test(\"Response matches the expected schema\", function () {\r",
-							"    pm.response.to.have.jsonSchema(schema);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "file",
-							"type": "file",
-							"src": "/C:/Users/milos/Downloads/projekat/transactions.csv"
-						}
-					]
-				},
-				"url": {
-					"raw": "http://localhost:5258/transactions/import",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5258",
-					"path": [
-						"transactions",
-						"import"
-					],
-					"query": [
-						{
-							"key": "file",
-							"value": null,
-							"disabled": true
 						}
 					]
 				}
@@ -671,7 +600,7 @@
 			"response": []
 		},
 		{
-			"name": "/transactions/24419286/split - 400- invalid split amount",
+			"name": "/transactions/24419286/split - 400 - invalid split amount",
 			"event": [
 				{
 					"listen": "test",
@@ -750,7 +679,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 440 Not Found\", function () {\r",
+							"pm.test(\"Status code is 440\", function () {\r",
 							"    pm.response.to.have.status(440);\r",
 							"});\r",
 							"\r",
@@ -929,7 +858,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 440 Not Found\", function () {\r",
+							"pm.test(\"Status code is 440\", function () {\r",
 							"    pm.response.to.have.status(440);\r",
 							"});\r",
 							"\r",
@@ -993,7 +922,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 440 Not Found\", function () {\r",
+							"pm.test(\"Status code is 440\", function () {\r",
 							"    pm.response.to.have.status(440);\r",
 							"});\r",
 							"\r",
@@ -1045,6 +974,406 @@
 						"transactions",
 						"24419286",
 						"categorize"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/transactions/import - 400 - invalid file (headers)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400 Bad Request\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"var schema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"        \"errors\": {\r",
+							"            \"type\": \"array\",\r",
+							"            \"items\": {\r",
+							"                \"type\": \"object\",\r",
+							"                \"properties\": {\r",
+							"                    \"tag\": {\r",
+							"                        \"type\": \"string\"\r",
+							"                    },\r",
+							"                    \"error\": {\r",
+							"                        \"type\": \"string\"\r",
+							"                    },\r",
+							"                    \"message\": {\r",
+							"                        \"type\": \"string\"\r",
+							"                    }\r",
+							"                },\r",
+							"                \"required\": [\"tag\", \"error\", \"message\"]\r",
+							"            }\r",
+							"        }\r",
+							"    },\r",
+							"    \"required\": [\"errors\"]\r",
+							"};\r",
+							"\r",
+							"//Tesiranje odgovora prema JSON schema:\r",
+							"pm.test(\"Response matches the expected schema\", function () {\r",
+							"    pm.response.to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/milos/Downloads/projekat/categories.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5258/transactions/import",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5258",
+					"path": [
+						"transactions",
+						"import"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/transactions/import - 400 - file not selected",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400 Bad Request\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"var schema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"        \"errors\": {\r",
+							"            \"type\": \"array\",\r",
+							"            \"items\": {\r",
+							"                \"type\": \"object\",\r",
+							"                \"properties\": {\r",
+							"                    \"tag\": {\r",
+							"                        \"type\": \"string\"\r",
+							"                    },\r",
+							"                    \"error\": {\r",
+							"                        \"type\": \"string\"\r",
+							"                    },\r",
+							"                    \"message\": {\r",
+							"                        \"type\": \"string\"\r",
+							"                    }\r",
+							"                },\r",
+							"                \"required\": [\"tag\", \"error\", \"message\"]\r",
+							"            }\r",
+							"        }\r",
+							"    },\r",
+							"    \"required\": [\"errors\"]\r",
+							"};\r",
+							"\r",
+							"//Tesiranje odgovora prema JSON schema:\r",
+							"pm.test(\"Response matches the expected schema\", function () {\r",
+							"    pm.response.to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5258/transactions/import",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5258",
+					"path": [
+						"transactions",
+						"import"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/categories/import - 400 - invalid file (headers)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400 Bad Request\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"var schema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"        \"errors\": {\r",
+							"            \"type\": \"array\",\r",
+							"            \"items\": {\r",
+							"                \"type\": \"object\",\r",
+							"                \"properties\": {\r",
+							"                    \"tag\": {\r",
+							"                        \"type\": \"string\"\r",
+							"                    },\r",
+							"                    \"error\": {\r",
+							"                        \"type\": \"string\"\r",
+							"                    },\r",
+							"                    \"message\": {\r",
+							"                        \"type\": \"string\"\r",
+							"                    }\r",
+							"                },\r",
+							"                \"required\": [\"tag\", \"error\", \"message\"]\r",
+							"            }\r",
+							"        }\r",
+							"    },\r",
+							"    \"required\": [\"errors\"]\r",
+							"};\r",
+							"\r",
+							"//Tesiranje odgovora prema JSON schema:\r",
+							"pm.test(\"Response matches the expected schema\", function () {\r",
+							"    pm.response.to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/milos/Downloads/projekat/transactions.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5258/categories/import",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5258",
+					"path": [
+						"categories",
+						"import"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/categories/import - 400 - file not selected",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400 Bad Request\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"var schema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"        \"errors\": {\r",
+							"            \"type\": \"array\",\r",
+							"            \"items\": {\r",
+							"                \"type\": \"object\",\r",
+							"                \"properties\": {\r",
+							"                    \"tag\": {\r",
+							"                        \"type\": \"string\"\r",
+							"                    },\r",
+							"                    \"error\": {\r",
+							"                        \"type\": \"string\"\r",
+							"                    },\r",
+							"                    \"message\": {\r",
+							"                        \"type\": \"string\"\r",
+							"                    }\r",
+							"                },\r",
+							"                \"required\": [\"tag\", \"error\", \"message\"]\r",
+							"            }\r",
+							"        }\r",
+							"    },\r",
+							"    \"required\": [\"errors\"]\r",
+							"};\r",
+							"\r",
+							"//Tesiranje odgovora prema JSON schema:\r",
+							"pm.test(\"Response matches the expected schema\", function () {\r",
+							"    pm.response.to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5258/categories/import",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5258",
+					"path": [
+						"categories",
+						"import"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/transactions/import - 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/milos/Downloads/projekat/transactions.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5258/transactions/import",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5258",
+					"path": [
+						"transactions",
+						"import"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/transactions/import - 440 - transaction exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 440\", function () {\r",
+							"    pm.response.to.have.status(440);\r",
+							"});\r",
+							"\r",
+							"var schema = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"problem\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"message\": {\r",
+							"      \"type\": \"string\"\r",
+							"    },\r",
+							"    \"details\": {\r",
+							"      \"type\": \"string\"\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\"problem\", \"message\", \"details\"]\r",
+							"};\r",
+							"\r",
+							"//Tesiranje odgovora prema JSON schema:\r",
+							"pm.test(\"Response matches the expected schema\", function () {\r",
+							"    pm.response.to.have.jsonSchema(schema);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/milos/Downloads/projekat/transactions.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5258/transactions/import",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5258",
+					"path": [
+						"transactions",
+						"import"
 					]
 				}
 			},
