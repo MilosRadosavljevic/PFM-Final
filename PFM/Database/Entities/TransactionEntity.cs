@@ -14,7 +14,6 @@ namespace PFM.Database.Entities
         public string Currency { get; set; }
         public MccCode? MccCode { get; set; }
         public TransactionKind Kind { get; set; }
-
         [ForeignKey("catCode")]
         public string? catCode { get; set; }
         public CategoryEntity Category { get; set; }

@@ -116,14 +116,11 @@ namespace PFM.Controllers
             }                
         }
 
-        //BadReques - 
-
         //[HttpPost("auto-categorize")]
         //public IActionResult AutoCategorizeTransactions()
         //{
         //    return Ok();
         //}
-
     }
 }
     

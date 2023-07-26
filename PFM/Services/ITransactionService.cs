@@ -17,11 +17,7 @@ namespace PFM.Services
             string? transactionKind);
 
         Task<Transaction> CategorizeTransaction(string transactionId, CategorizeTransactionCommand categorizeTransactionCommand);
-
-        Task<bool> CheckIfTransactionExistsAsync(string transactionId);
-
         Task<Transaction> CreateTransactionSplit(string transactionId, SplitTransactionCommand splitTransactionCommand);
-
 
     }
 }

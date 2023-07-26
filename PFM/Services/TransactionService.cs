@@ -3,7 +3,6 @@ using PFM.Commands;
 using PFM.Database.Entities;
 using PFM.Database.Repositories;
 using PFM.Models;
-using System.ComponentModel;
 
 namespace PFM.Services
 {
@@ -12,6 +11,7 @@ namespace PFM.Services
         ITransactionRepository _transactionRepository;
         ICategoryRepository _categoryRepository;
         IMapper _mapper;
+
 
         public TransactionService(ITransactionRepository transactionRepository, ICategoryRepository categoryRepository, IMapper mapper)
         {
@@ -72,9 +72,7 @@ namespace PFM.Services
         {
             var transaction = await _transactionRepository.GetTransactionById(transctionId);
             var category = await _categoryRepository.GetCategoryByCode(categorizeTransactionCommand.CategoryCode);
-            ValidationProblem valProblem;
             BusinessProblem busProblem;
-            List<Error> validationErrors = new List<Error>();
 
             if (transaction == null)
             {
@@ -87,7 +85,7 @@ namespace PFM.Services
                 throw new CustomException(busProblem);
             }
 
-            if(category == null)
+            if (category == null)
             {
                 busProblem = new BusinessProblem
                 {
@@ -113,8 +111,8 @@ namespace PFM.Services
 
             if (transactionEntity == null)
             {
-                // BUSINESS PROBLEM
-                busProblem = new BusinessProblem{
+                busProblem = new BusinessProblem
+                {
                     ProblemLiteral = "transaction-id-does-not-exist",
                     ProblemMessage = "Transaction id does not exist",
                     ProblemDetails = "Provided transaction id does not exist"
@@ -142,8 +140,9 @@ namespace PFM.Services
 
                 if (exinstingCatCodeInCurrentSplit.Contains(split.CategoryCode))
                 {
-                    validationErrors.Add(new Error { 
-                        Message = "Forbidden to split by the same category", 
+                    validationErrors.Add(new Error
+                    {
+                        Message = "Forbidden to split by the same category",
                         Tag = "catcode",
                         Err = "forbidden-split-by-same-category"
                     });
@@ -159,13 +158,14 @@ namespace PFM.Services
 
             if (totalAmount != transactionEntity.Amount)
             {
-                //VALIDATION PROBLEM
-                validationErrors.Add(new Error { 
-                    Message = "Invalid total amount to split.", 
+                validationErrors.Add(new Error
+                {
+                    Message = "Invalid total amount to split.",
                     Tag = "amount",
-                    Err = "invalid-split-amount" 
+                    Err = "invalid-split-amount"
                 });
-                valProblem = new ValidationProblem { 
+                valProblem = new ValidationProblem
+                {
                     Errors = validationErrors
                 };
                 throw new CustomException(valProblem);

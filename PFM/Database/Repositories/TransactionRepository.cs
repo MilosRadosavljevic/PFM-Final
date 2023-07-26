@@ -32,7 +32,7 @@ namespace PFM.Database.Repositories
             string? transactionKind = null
             )
         {
-            var query = _dbContext.Transactions.Include(x=>x.Splits).AsQueryable();
+            var query = _dbContext.Transactions.Include(x => x.Splits).AsQueryable();
 
             var totalCount = query.Count();
             var totalPages = (int)Math.Ceiling(totalCount * 1.0 / pageSize);
@@ -43,28 +43,28 @@ namespace PFM.Database.Repositories
                 {
                     case "id":
                         query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.Id) : query.OrderByDescending(x => x.Id);
-                    break;
+                        break;
                     case "beneficiary-name":
                         query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.BeneficiaryName) : query.OrderByDescending(x => x.BeneficiaryName);
-                    break;
+                        break;
                     case "date":
                         query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.Date) : query.OrderByDescending(x => x.Date);
-                    break;
+                        break;
                     case "direction":
                         query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.Direction) : query.OrderByDescending(x => x.Direction);
-                    break;
+                        break;
                     case "amount":
                         query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.Amount) : query.OrderByDescending(x => x.Amount);
-                    break;
+                        break;
                     case "description":
                         query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.Description) : query.OrderByDescending(x => x.Description);
-                    break;
+                        break;
                     case "currency":
                         query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.Currency) : query.OrderByDescending(x => x.Currency);
-                    break;
+                        break;
                     case "mcc":
                         query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.MccCode) : query.OrderByDescending(x => x.MccCode);
-                    break;
+                        break;
                     case "kind":
                         query = sortOrder == SortOrder.Asc ? query.OrderBy(x => x.Kind) : query.OrderByDescending(x => x.Kind);
                         break;
@@ -75,9 +75,7 @@ namespace PFM.Database.Repositories
                 query = query.OrderBy(x => x.Date);
             }
 
-            //ValidationProblem valProblem;
             BusinessProblem busProblem;
-            //List<Error> validationErrors = new List<Error>();
 
             if (!string.IsNullOrEmpty(transactionKind))
             {
@@ -118,7 +116,7 @@ namespace PFM.Database.Repositories
                 //    };
                 //    throw new CustomException(valProblem);
                 //}
-                
+
                 query = query.Where(x => x.Date >= startDate.Value);
             }
             if (endDate.HasValue)
@@ -141,7 +139,7 @@ namespace PFM.Database.Repositories
             }
             query = query.Skip((page - 1) * pageSize).Take(pageSize);
 
-            var transactions = await query.ToListAsync();            
+            var transactions = await query.ToListAsync();
 
             return new PagedSortedListTransactions<TransactionEntity>
             {
@@ -206,17 +204,14 @@ namespace PFM.Database.Repositories
                     var category = categories.FirstOrDefault(c => c.Code == group.CatCode);
                     if (category != null && !string.IsNullOrEmpty(category.ParentCode))
                     {
-                        // Provera da li kategorija ima parent-code
                         var mainCategory = categories.FirstOrDefault(c => c.Code == category.ParentCode);
                         if (mainCategory != null)
                         {
-                            // Pronalazenje osnovne kategorije
                             var mainGroup = spendingAnalytics.FirstOrDefault(g => g.CatCode == mainCategory.Code);
                             if (mainGroup != null)
                             {
                                 mainGroup.Amount += group.Amount;
                                 mainGroup.Count += group.Count;
-                                // Sprecavanje prikaza podkategorije
                                 spendingAnalytics.Remove(group);
                             }
                             else

@@ -12,7 +12,7 @@ using PFM.Database;
 namespace PFM.Migrations
 {
     [DbContext(typeof(PfmDbContext))]
-    [Migration("20230724155125_InitDb")]
+    [Migration("20230726005207_InitDb")]
     partial class InitDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
