@@ -116,14 +116,14 @@
 			"response": []
 		},
 		{
-			"name": "/spending-analytics?catcode=asd - 404 - invalid catcode",
+			"name": "/spending-analytics?catcode=asd - 440 - invalid catcode",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 404 Not Found\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
+							"pm.test(\"Status code is 440 Not Found\", function () {\r",
+							"    pm.response.to.have.status(440);\r",
 							"});\r",
 							"\r",
 							"var schema = {\r",
@@ -334,14 +334,14 @@
 			"response": []
 		},
 		{
-			"name": "/categories/?parent-id=W - 404",
+			"name": "/categories/?parent-id=W - 440",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 404 Not Found\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
+							"pm.test(\"Status code is 440 Not Found\", function () {\r",
+							"    pm.response.to.have.status(440);\r",
 							"});\r",
 							"\r",
 							"var schema = {\r",
@@ -464,14 +464,14 @@
 			"response": []
 		},
 		{
-			"name": "/transactions/?transaction-kind=asd - 404",
+			"name": "/transactions/?transaction-kind=asd - 440",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 404 Not Found\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
+							"pm.test(\"Status code is 440 Not Found\", function () {\r",
+							"    pm.response.to.have.status(440);\r",
 							"});\r",
 							"\r",
 							"var schema = {\r",
@@ -524,14 +524,14 @@
 			"response": []
 		},
 		{
-			"name": "/transactions/import - 404",
+			"name": "/transactions/import - 440",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 404 Not Found\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
+							"pm.test(\"Status code is 440 Not Found\", function () {\r",
+							"    pm.response.to.have.status(440);\r",
 							"});\r",
 							"\r",
 							"var schema = {\r",
@@ -744,14 +744,14 @@
 			"response": []
 		},
 		{
-			"name": "/transactions/12345678/split 404 - invalid transaction id",
+			"name": "/transactions/12345678/split 440 - invalid transaction id",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 404 Not Found\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
+							"pm.test(\"Status code is 440 Not Found\", function () {\r",
+							"    pm.response.to.have.status(440);\r",
 							"});\r",
 							"\r",
 							"var schema = {\r",
@@ -923,14 +923,14 @@
 			"response": []
 		},
 		{
-			"name": "/transactions/12345678/categorize - 404 - invalid transaction id",
+			"name": "/transactions/12345678/categorize - 440 - invalid transaction id",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 404 Not Found\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
+							"pm.test(\"Status code is 440 Not Found\", function () {\r",
+							"    pm.response.to.have.status(440);\r",
 							"});\r",
 							"\r",
 							"var schema = {\r",
@@ -987,14 +987,14 @@
 			"response": []
 		},
 		{
-			"name": "/transactions/24419286/categorize - 404 - invalid catcode",
+			"name": "/transactions/24419286/categorize - 440 - invalid catcode",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 404 Not Found\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
+							"pm.test(\"Status code is 440 Not Found\", function () {\r",
+							"    pm.response.to.have.status(440);\r",
 							"});\r",
 							"\r",
 							"var schema = {\r",

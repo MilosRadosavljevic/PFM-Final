@@ -9,6 +9,8 @@ namespace PFM.Mappings
     {
         public AutoMapperProfile()
         {
+            // MCC
+            //CreateMap<MccCode, int>().ConvertUsing(src => (int)src);
 
             //  for transactions
             CreateMap<TransactionEntity, Transaction>()
@@ -21,7 +23,6 @@ namespace PFM.Mappings
 
             CreateMap<CreateTransactionCommand, TransactionEntity>()
                 .ForMember(ent => ent.Id, ctc => ctc.MapFrom(x => x.TransactionId));
-
 
 
             //  for categories

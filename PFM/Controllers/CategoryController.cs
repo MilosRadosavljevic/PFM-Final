@@ -35,17 +35,34 @@ namespace PFM.Controllers
             {
                 if (ex.Problem is BusinessProblem)
                 {
-                    return new ObjectResult(ex.Problem) { StatusCode = 404 };
+                    return new ObjectResult(ex.Problem) { StatusCode = 440 };
                 }
                 return new ObjectResult(ex.Problem) { StatusCode = 400 };
             }
         }
 
         [HttpPost("import")]
-        public async Task<IActionResult> ImportCategories(IFormFile file)
+        public async Task<IActionResult> ImportCategories(IFormFile? file)
         {
             try
             {
+                if (file == null || file.Length == 0)
+                {
+                    ValidationProblem valProblem;
+                    List<Error> validationErrors = new List<Error>();
+
+                    validationErrors.Add(new Error
+                    {
+                        Message = "File to import is empty or not selected.",
+                        Tag = "file",
+                        Err = "invalid-or-empty-file"
+                    });
+                    valProblem = new ValidationProblem
+                    {
+                        Errors = validationErrors
+                    };
+                    throw new CustomException(valProblem);
+                }
                 file = Request.Form.Files[0];
                 using (var reader = new StreamReader(file.OpenReadStream()))
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))

@@ -35,7 +35,7 @@ namespace PFM.Controllers
             {
                 if (ex.Problem is BusinessProblem)
                 {
-                    return new ObjectResult(ex.Problem) { StatusCode = 404 };
+                    return new ObjectResult(ex.Problem) { StatusCode = 440 };
                 }
                 return new ObjectResult(ex.Problem) { StatusCode = 400 };
             }
